@@ -1,0 +1,48 @@
+#!/bin/bash
+
+# Crear directorios si no existen
+mkdir -p ~/.vim
+
+# Instalar vim-plug si no está instalado
+if [ ! -f ~/.vim/autoload/plug.vim ]; then
+    curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+        https://raw.githubusercontent.com/luisvillegasbf23/configs/main/configs/.vim/autoload/plug.vim
+    echo "vim-plug instalado correctamente."
+else
+    echo "vim-plug ya está instalado."
+fi
+
+# Función para realizar copia de seguridad de un archivo existente
+backup_file() {
+    local file=$1
+    if [ -f "$file" ]; then
+        cp "$file" "$file.bak_$(date +%Y%m%d%H%M%S)"
+        echo "Se realizó una copia de seguridad de $file en $file.bak_$(date +%Y%m%d%H%M%S)"
+    fi
+}
+
+# Función para copiar archivos, con opción de sobrescribir
+copy_with_backup() {
+    local src_file=$1
+    local dest_file=$2
+
+    if [ -f "$dest_file" ]; then
+        echo "El archivo $dest_file ya existe. ¿Deseas sobrescribirlo? (s/n)"
+        read -r respuesta
+        if [ "$respuesta" != "s" ]; then
+            echo "El archivo $dest_file no será sobrescrito."
+            return
+        fi
+        backup_file "$dest_file"
+    fi
+    cp "$src_file" "$dest_file"
+    echo "Archivo $src_file copiado a $dest_file"
+}
+
+# Copiar los archivos de configuración con opción de sobrescribir
+copy_with_backup "https://raw.githubusercontent.com/luisvillegasbf23/configs/main/configs/.vim/vimrc" "~/.vimrc"
+copy_with_backup "https://raw.githubusercontent.com/luisvillegasbf23/configs/main/configs/.vim/maps.vim" "~/.vim/maps.vim"
+copy_with_backup "https://raw.githubusercontent.com/luisvillegasbf23/configs/main/configs/.vim/plugins.vim" "~/.vim/plugins.vim"
+
+# Instalar plugins de Vim
+vim +PlugInstall +qall
