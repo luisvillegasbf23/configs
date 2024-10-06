@@ -29,7 +29,7 @@ copy_with_backup() {
     if [ -f "$dest_file" ]; then
         echo "El archivo $dest_file ya existe. ¿Deseas sobrescribirlo? (s/n)"
         read -r respuesta
-        if [ "$respuesta" != "s" ]; entonces
+        if [ "$respuesta" != "s" ]; then
             echo "El archivo $dest_file no será sobrescrito."
             return
         fi
