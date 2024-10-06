@@ -6,7 +6,7 @@ mkdir -p ~/.vim
 # Instalar vim-plug si no está instalado
 if [ ! -f ~/.vim/autoload/plug.vim ]; then
     curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-        https://raw.githubusercontent.com/luisvillegasbf23/configs/main/configs/.vim/autoload/plug.vim
+        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     echo "vim-plug instalado correctamente."
 else
     echo "vim-plug ya está instalado."
@@ -35,14 +35,14 @@ copy_with_backup() {
         fi
         backup_file "$dest_file"
     fi
-    cp "$src_file" "$dest_file"
+    curl -fLo "$dest_file" "$src_file"
     echo "Archivo $src_file copiado a $dest_file"
 }
 
 # Copiar los archivos de configuración con opción de sobrescribir
-copy_with_backup "https://raw.githubusercontent.com/luisvillegasbf23/configs/main/configs/.vim/vimrc" "~/.vimrc"
-copy_with_backup "https://raw.githubusercontent.com/luisvillegasbf23/configs/main/configs/.vim/maps.vim" "~/.vim/maps.vim"
-copy_with_backup "https://raw.githubusercontent.com/luisvillegasbf23/configs/main/configs/.vim/plugins.vim" "~/.vim/plugins.vim"
+copy_with_backup "https://raw.githubusercontent.com/luisvillegasbf23/configs/main/.vim/.vimrc" "~/.vimrc"
+copy_with_backup "https://raw.githubusercontent.com/luisvillegasbf23/configs/main/.vim/maps.vim" "~/.vim/maps.vim"
+copy_with_backup "https://raw.githubusercontent.com/luisvillegasbf23/configs/main/.vim/plugins.vim" "~/.vim/plugins.vim"
 
 # Instalar plugins de Vim
 vim +PlugInstall +qall
